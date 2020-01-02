@@ -1,5 +1,6 @@
-const ERC777Token = artifacts.require('ERC777Token');
-const ERC777Recipient = artifacts.require('ERC777Recipient');
+const TrakxWrappedXRP = artifacts.require('TrakxWrappedXRP');
+const TrakxWrappedXRPSender = artifacts.require('TrakxWrappedXRPSender');
+const TrakxWrappedXRPRecipient = artifacts.require('TrakxWrappedXRPRecipient');
 
 require('@openzeppelin/test-helpers/configure')({ provider: web3.currentProvider, environment: 'truffle' });
 
@@ -11,8 +12,10 @@ module.exports = async function (deployer, network, accounts) {
     await singletons.ERC1820Registry(accounts[0]);
   }
 
-  await deployer.deploy(ERC777Token);
+  await deployer.deploy(TrakxWrappedXRP);
   const token = await ERC777Token.deployed();
 
-  await deployer.deploy(ERC777Recipient, token.address);
+  await deployer.deploy(TrakxWrappedXRPSender);
+
+  await deployer.deploy(TrakxWrappedXRPRecipient, token.address);
 };

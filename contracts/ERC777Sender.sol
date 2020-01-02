@@ -1,18 +1,22 @@
 pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/token/ERC777/IERC777.sol";
-import "@openzeppelin/contracts/introspection/IERC1820Registry.sol";
-import "@openzeppelin/contracts/introspection/ERC1820Implementer.sol";
-import "@openzeppelin/contracts/token/ERC777/IERC777Sender.sol";
+import "openzeppelin-solidity/contracts/token/ERC777/IERC777.sol";
+import "openzeppelin-solidity/contracts/introspection/IERC1820Registry.sol";
+import "openzeppelin-solidity/contracts/introspection/ERC1820Implementer.sol";
+import "openzeppelin-solidity/contracts/token/ERC777/IERC777Sender.sol";
 
 contract ERC777Sender is IERC777Sender, ERC1820Implementer {
 
-    bytes32 constant public TOKENS_SENDER_INTERFACE_HASH = keccak256("ERC777TokensSender");
+    bytes32 public TOKEN_SENDER_INTERFACE_HASH;
+
+    constructor (bytes32 tokenSenderHash) public {
+        TOKEN_SENDER_INTERFACE_HASH = tokenSenderHash;
+    }
 
     event TokensSent(address operator, address from, address to, uint256 amount, bytes userData, bytes operatorData);
 
     function senderFor(address account) public {
-        _registerInterfaceForAddress(TOKENS_SENDER_INTERFACE_HASH, account);
+        _registerInterfaceForAddress(TOKEN_SENDER_INTERFACE_HASH, account);
     }
 
     function tokensToSend(

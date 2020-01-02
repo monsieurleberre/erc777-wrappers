@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/access/Roles.sol";
-import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
+import "openzeppelin-solidity/contracts/access/Roles.sol";
+import "openzeppelin-solidity/contracts/token/ERC777/ERC777.sol";
 
 
 /**
@@ -21,14 +21,16 @@ contract ERC777Token is ERC777 {
     /**
      * @dev Constructor that gives _msgSender() all of existing tokens.
      */
-    constructor (address[] memory admins,
+    constructor (string memory name,
+                string memory symbol,
+                address[] memory admins,
                 address[] memory minters,
                 address[] memory burners)
-                public ERC777("Wrapped XRP", "wXRP", admins) {
+                public ERC777(name, symbol, admins) {
         for (uint256 i = 0; i < admins.length; ++i) {
             _admins.add(admins[i]);
         }
-        
+
         for (uint256 i = 0; i < minters.length; ++i) {
             _minters.add(minters[i]);
         }
@@ -46,25 +48,25 @@ contract ERC777Token is ERC777 {
     // }
 
     function addMinter(address addressToAdd) public {
-        require(_admin.has(_msgSender()), "Only admins can add new minters.");
+        require(_admins.has(_msgSender()), "Only admins can add new minters.");
         require(!_minters.has(addressToAdd),"Specified address is already a minter.");
         _minters.add(addressToAdd);
     }
 
     function addBurner(address addressToAdd) public {
-        require(_admin.has(_msgSender()), "Only admins can add new minters.");
+        require(_admins.has(_msgSender()), "Only admins can add new minters.");
         require(!_burners.has(addressToAdd),"Specified address is already a minter.");
         _burners.add(addressToAdd);
     }
 
     function removeMinter(address addressToRemove) public {
-        require(_admin.has(_msgSender()), "Only admins can remove new burner.");
+        require(_admins.has(_msgSender()), "Only admins can remove new burner.");
         require(_minters.has(addressToRemove),"Specified address is not a burner.");
         _minters.remove(addressToRemove);
     }
 
     function removeBurner(address addressToRemove) public {
-        require(_admin.has(_msgSender()), "Only admins can remove new burner.");
+        require(_admins.has(_msgSender()), "Only admins can remove new burner.");
         require(_burners.has(addressToRemove),"Specified address is not a burner.");
         _burners.remove(addressToRemove);
     }
@@ -79,9 +81,9 @@ contract ERC777Token is ERC777 {
         super._mint(operator, account, amount, userData, operatorData);
     }
 
-    function burn(uint256 amount, bytes calldata data) public {
+    function burn(uint256 amount, bytes memory data) public {
         require(_burners.has(_msgSender()), "Only burners can burn.");
-        super.burn(amount, data);
+        super._burn(_msgSender(), _msgSender(), amount, data, "");
     }
 
     function operatorBurn(address account, uint256 amount, bytes calldata data, bytes calldata operatorData) external {
