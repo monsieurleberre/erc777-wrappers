@@ -6,13 +6,9 @@ import "./ERC777Recipient.sol";
 
 contract TrakxWrappedXRP is ERC777Token {
 
-    string public constant name = "Trakx Wrapped XRP";
-    string public constant symbol = "wXRP";
-    uint public INITIAL_SUPPLY = 0;
-
-    constructor() public ERC777Token(name, symbol, msg.sender, [msg.sender], [msg.sender]) {
-
-    }
+    constructor() public ERC777Token(
+        "Trakx Wrapped XRP",
+        "wXRP") {}
 }
 
 contract TrakxWrappedXRPSender is ERC777Sender {
@@ -20,7 +16,7 @@ contract TrakxWrappedXRPSender is ERC777Sender {
 }
 
 contract TrakxWrappedXRPRecipient is ERC777Recipient {
-    constructor (address tokenAddress) public ERC777Sender(
+    constructor (address tokenAddress) public ERC777Recipient(
         tokenAddress,
         keccak256("Trakx Wrapped XRP - wXRP - 0.1.0 - Recipient")
     ) {}

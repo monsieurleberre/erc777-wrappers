@@ -22,22 +22,37 @@ contract ERC777Token is ERC777 {
      * @dev Constructor that gives _msgSender() all of existing tokens.
      */
     constructor (string memory name,
-                string memory symbol,
-                address[] memory admins,
-                address[] memory minters,
-                address[] memory burners)
-                public ERC777(name, symbol, admins) {
-        for (uint256 i = 0; i < admins.length; ++i) {
-            _admins.add(admins[i]);
-        }
+                string memory symbol)
+                public ERC777(name, symbol, new address[](0)) {
+        
+        _admins.add(_msgSender());
+        // for (uint256 i = 0; i < admins.length; ++i) {
+        //     _admins.add(admins[i]);
+        // }
 
-        for (uint256 i = 0; i < minters.length; ++i) {
-            _minters.add(minters[i]);
-        }
+        // for (uint256 i = 0; i < minters.length; ++i) {
+        //     _minters.add(minters[i]);
+        // }
 
-        for (uint256 i = 0; i < burners.length; ++i) {
-            _burners.add(burners[i]);
-        }
+        // for (uint256 i = 0; i < burners.length; ++i) {
+        //     _burners.add(burners[i]);
+        // }
+    }
+
+
+    modifier onlyAdmins() {
+        require(_admins.has(_msgSender()), "Caller does not have the admin role");
+        _;
+    }
+
+    modifier onlyMinters() {
+        require(_minters.has(_msgSender()), "Caller does not have the minter role");
+        _;
+    }
+
+    modifier onlyBurners() {
+        require(_burners.has(_msgSender()), "Caller does not have the burner role");
+        _;
     }
 
     // maybe need a superadmin to add remove admins
@@ -47,26 +62,22 @@ contract ERC777Token is ERC777 {
     //     _admin.add(addressToAdd);
     // }
 
-    function addMinter(address addressToAdd) public {
-        require(_admins.has(_msgSender()), "Only admins can add new minters.");
+    function addMinter(address addressToAdd) public onlyAdmins {
         require(!_minters.has(addressToAdd),"Specified address is already a minter.");
         _minters.add(addressToAdd);
     }
 
-    function addBurner(address addressToAdd) public {
-        require(_admins.has(_msgSender()), "Only admins can add new minters.");
+    function addBurner(address addressToAdd) public onlyAdmins {
         require(!_burners.has(addressToAdd),"Specified address is already a minter.");
         _burners.add(addressToAdd);
     }
 
-    function removeMinter(address addressToRemove) public {
-        require(_admins.has(_msgSender()), "Only admins can remove new burner.");
+    function removeMinter(address addressToRemove) public onlyAdmins {
         require(_minters.has(addressToRemove),"Specified address is not a burner.");
         _minters.remove(addressToRemove);
     }
 
-    function removeBurner(address addressToRemove) public {
-        require(_admins.has(_msgSender()), "Only admins can remove new burner.");
+    function removeBurner(address addressToRemove) public onlyAdmins {
         require(_burners.has(addressToRemove),"Specified address is not a burner.");
         _burners.remove(addressToRemove);
     }
@@ -75,19 +86,20 @@ contract ERC777Token is ERC777 {
         address account,
         uint256 amount,
         bytes memory userData,
-        bytes memory operatorData) public {
-        require(_minters.has(_msgSender()), "Only minters can mint.");
-
+        bytes memory operatorData)
+    public onlyMinters {
         super._mint(operator, account, amount, userData, operatorData);
     }
 
-    function burn(uint256 amount, bytes memory data) public {
-        require(_burners.has(_msgSender()), "Only burners can burn.");
-        super._burn(_msgSender(), _msgSender(), amount, data, "");
+    function burn(uint256 amount, bytes calldata data)
+    external onlyBurners {
+        //why is this not possible?
+        //super.burn(amount, calldata);
+        //send(_admins[0], amount, data);
     }
 
-    function operatorBurn(address account, uint256 amount, bytes calldata data, bytes calldata operatorData) external {
-        require(_burners.has(_msgSender()), "Operator or not, only burners can burn.");
-        super.operatorBurn(account, amount, data, operatorData);
+    function operatorBurn(address account, uint256 amount, bytes calldata data, bytes calldata operatorData)
+    external onlyBurners {
+        //super.operatorBurn(account, amount, data, operatorData);
     }
 }
