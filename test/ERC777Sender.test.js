@@ -1,4 +1,4 @@
-const { singletons, BN, expectEvent } = require('@openzeppelin/test-helpers');
+const { singletons, BN, expectEvent } = require('openzeppelin-solidity/test-helpers');
 
 const ERC777Token = artifacts.require('ERC777Token');
 const ERC777Sender = artifacts.require('ERC777Sender');

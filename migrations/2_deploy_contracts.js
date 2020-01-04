@@ -2,9 +2,11 @@ const TrakxWrappedXRP = artifacts.require('TrakxWrappedXRP');
 const TrakxWrappedXRPSender = artifacts.require('TrakxWrappedXRPSender');
 const TrakxWrappedXRPRecipient = artifacts.require('TrakxWrappedXRPRecipient');
 
-require('@openzeppelin/test-helpers/configure')({ provider: web3.currentProvider, environment: 'truffle' });
+require('openzeppelin-solidity/test-helpers/configure')({ 
+  provider: web3.currentProvider, environment: 'truffle' 
+});
 
-const { singletons } = require('@openzeppelin/test-helpers');
+const { singletons } = require('openzeppelin-solidity/test-helpers');
 
 module.exports = async function (deployer, network, accounts) {
   if (network === 'development') {

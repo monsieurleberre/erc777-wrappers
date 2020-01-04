@@ -24,19 +24,9 @@ contract ERC777Token is ERC777 {
     constructor (string memory name,
                 string memory symbol)
                 public ERC777(name, symbol, new address[](0)) {
-        
         _admins.add(_msgSender());
-        // for (uint256 i = 0; i < admins.length; ++i) {
-        //     _admins.add(admins[i]);
-        // }
-
-        // for (uint256 i = 0; i < minters.length; ++i) {
-        //     _minters.add(minters[i]);
-        // }
-
-        // for (uint256 i = 0; i < burners.length; ++i) {
-        //     _burners.add(burners[i]);
-        // }
+        _minters.add(_msgSender());
+        _burners.add(_msgSender());
     }
 
 
