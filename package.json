@@ -1,6 +1,6 @@
 {
-  "name": "trakx-erc777-wrapper-template",
-  "version": "0.1.0",
+  "name": "drizzle-box",
+  "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
   "directories": {
@@ -11,16 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trakx/erc777-wrappers.git"
+    "url": "git+https://github.com/truffle-box/drizzle-box.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/trakx/erc777-wrappers/issues"
+    "url": "https://github.com/truffle-box/drizzle-box/issues"
   },
-  "homepage": "https://github.com/trakx/erc777-wrappers#readme",
+  "homepage": "https://github.com/truffle-box/drizzle-box#readme",
   "dependencies": {
-    "openzeppelin-solidity": "2.4.0"
+    "@openzeppelin/contracts": "^2.4.0",
+    "@openzeppelin/test-helpers": "^0.5.4"
   }
 }
