@@ -8,7 +8,12 @@ const options = {
   },
   contracts: [WrappedXRP],
   events: {
-    WrappedXRP: ["Minted"],
+    WrappedXRP: [
+      "AuthorizedOperator", "RevokedOperator",
+      "Burned", "BurnerAdded", "BurnerRemoved",
+      "Minted", "MinterAdded", "MinterRemoved",
+      "Sent", "Transfer"
+    ],
   },
   polls: {
     accounts: 1500,

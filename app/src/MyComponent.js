@@ -43,7 +43,9 @@ export default ({ accounts }) => (
     <div className="section">
       <h2>Minting</h2>
       <p>
-        todo
+        <strong>Mint: </strong>
+        <ContractForm contract="WrappedXRP" method="mint"
+          labels={["Destination address", "Amount to mint", "User message", "Minter message"]} />
       </p>
     </div>
   </div>
