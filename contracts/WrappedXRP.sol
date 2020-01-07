@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "./MintableERC777Token.sol";
+import "./SupervisedERC777Token.sol";
 
 
 /**
@@ -10,10 +10,10 @@ import "./MintableERC777Token.sol";
  * `ERC20` or `ERC777` functions.
  * Based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/examples/SimpleToken.sol
  */
-contract WrappedXRP is MintableERC777Token {
+contract WrappedXRP is SupervisedERC777Token {
 
     /**
      * @dev Constructor that gives msg.sender all of existing tokens.
      */
-    constructor () public MintableERC777Token("Trakx Wrapped XRP", "wXRP") {}
+    constructor () public SupervisedERC777Token("Trakx Wrapped XRP", "wXRP") {}
 }
