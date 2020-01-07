@@ -1,6 +1,5 @@
 pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/access/Roles.sol";
 import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 import "./SupervisedToken.sol";
 
@@ -11,8 +10,7 @@ import "./SupervisedToken.sol";
  * `ERC20` or `ERC777` functions.
  * Based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/examples/SimpleToken.sol
  */
-contract MintableERC777Token is ERC777, SupervisedToken {
-
+contract SupervisedERC777Token is ERC777, SupervisedToken {
 
     /**
      * @dev Constructor that gives _msgSender() all of existing tokens.
