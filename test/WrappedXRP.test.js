@@ -35,7 +35,7 @@ contract("WrappedXRP",  ([_, registryFunder, creator, operator, receiver, someon
 
   });
 
-  it("should allow creator to mint and raise events.", async () => {
+  it("should allow creator to mint and raise events on mint.", async () => {
 
     const minting = await this.token.mint(receiver, this.mintAmount, this.mintUserData, this.mintOperatorData,
        { from: creator });
@@ -56,35 +56,8 @@ contract("WrappedXRP",  ([_, registryFunder, creator, operator, receiver, someon
       operator: creator,
       to: receiver,
       amount: this.mintAmount.toString(),
-      operatorData: operatorData,
-      data: userData
+      operatorData: this.mintOperatorData,
+      data: this.mintUserData
     });
   });
-
-  it("should allow creator to add minters, an minter to remove other minter", async () => {
-    
-    const addMinter = await this.token.addMinter()
-    const minting = await this.token.mint(receiver, mintAmount, userData, operatorData, { from: creator });
-
-    const balance = await this.token.balanceOf(receiver);
-    balance.should.be.bignumber.equal(mintAmount.toString(), "89 coins should have appeared on the receiver's account.");
-
-    const totalSupply = await this.token.totalSupply();
-    totalSupply.should.be.bignumber.equal(mintAmount.toString(), "89 coins should have appeared on the receiver's account.");
-
-    await expectEvent(minting, 'Transfer', {
-      from: ZERO_ADDRESS,
-      to: receiver,
-      value: mintAmount.toString(),
-    });
-
-    await expectEvent(minting, 'Minted', {
-      operator: creator,
-      to: receiver,
-      amount: mintAmount.toString(),
-      operatorData: operatorData,
-      data: userData
-    });
-  });
-
 });
