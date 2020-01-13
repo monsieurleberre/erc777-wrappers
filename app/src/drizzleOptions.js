@@ -1,16 +1,19 @@
 import Web3 from "web3";
-import SimpleStorage from "./contracts/SimpleStorage.json";
-import ComplexStorage from "./contracts/ComplexStorage.json";
-import TutorialToken from "./contracts/TutorialToken.json";
+import WrappedXRP from "./contracts/WrappedXRP.json";
 
 const options = {
   web3: {
     block: false,
-    customProvider: new Web3("ws://localhost:8545"),
+    customProvider: new Web3("ws://localhost:7545"),
   },
-  contracts: [SimpleStorage, ComplexStorage, TutorialToken],
+  contracts: [WrappedXRP],
   events: {
-    SimpleStorage: ["StorageSet"],
+    WrappedXRP: [
+      "AuthorizedOperator", "RevokedOperator",
+      "Burned", "BurnerAdded", "BurnerRemoved",
+      "Minted", "MinterAdded", "MinterRemoved",
+      "Sent", "Transfer"
+    ],
   },
   polls: {
     accounts: 1500,
